@@ -3,30 +3,30 @@
 import sys
 
 
-def part_one() -> None:
-    data = read_input()
-    print(f"{type(data)}: {data}")
+def part_one(data: str) -> int:
+    print(data)
     raise NotImplementedError("part_one")
 
 
-def part_two() -> None:
-    data = read_input()
-    print(f"{type(data)}: {data}")
+def part_two(data: str) -> int:
+    print(data)
     raise NotImplementedError("part_two")
 
 
 def read_input() -> str:
-    return sys.stdin.read()
+    return sys.stdin.read().strip("\n")
 
 
-def main(args):
+def main(args) -> None:
+    data = read_input()
+
     match a := args[0]:
         case "1":
-            return part_one() is None
+            print(f"part_one: {part_one(data)}")
         case "2":
-            return part_two() is None
+            print(f"part_two: {part_two(data)}")
         case _:
-            raise ValueError(f"invalid argument {c}") 
+            raise ValueError(f"invalid argument '{a}'") 
 
 
 if __name__ == "__main__":
