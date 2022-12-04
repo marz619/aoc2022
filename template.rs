@@ -1,12 +1,15 @@
+use std::env;
 use std::io::Read;
 
 fn part1() {
     let input = read_input();
+    println!("{:?}", input);
     panic!("part1 not implemented!")
 }
 
 fn part2() {
     let input = read_input();
+    println!("{:?}", input);
     panic!("part2 not implemented!")
 }
 
@@ -17,12 +20,16 @@ fn read_input() -> String {
 }
 
 fn main() {
-    let args: Vec<String> = std::env::args().collect();
-    if args[1] == "1" {
-        part1();
-    } else if args[1] == "2" {
-        part2();
-    } else {
-        panic!("invalid argument");
+    let args: Vec<String> = env::args().collect();
+    match args.len() {
+        2 => match &args[1][..] {
+            "1" => part1(),
+            "2" => part2(),
+            _ => panic!("invalid argument {}\n", args[1]),
+        },
+        _ => panic!(
+            "invalid number of arguments {}; must provide 2\n",
+            args.len()
+        ),
     }
 }
