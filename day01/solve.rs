@@ -1,11 +1,14 @@
 use std::io::Read;
 
 fn parse_list(list: String) -> Vec<Vec<i32>> {
-    list.split("\n\n").map(|inventory| {
-        inventory.lines()
-            .map(|item| item.parse::<i32>().unwrap())
-            .collect()
-    }).collect()
+    list.split("\n\n")
+        .map(|inventory| {
+            inventory
+                .lines()
+                .map(|item| item.parse::<i32>().unwrap())
+                .collect()
+        })
+        .collect()
 }
 
 fn sum(inventory: &Vec<i32>) -> i32 {

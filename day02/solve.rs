@@ -11,9 +11,9 @@ fn move_value(c: char) -> i32 {
 
 fn round_value(op: i32, me: i32) -> i32 {
     match op - me {
-        -1 | 2 => 6,  // win
-        0 => 3,       // draw
-        1 | -2 => 0,  // loss
+        -1 | 2 => 6, // win
+        0 => 3,      // draw
+        1 | -2 => 0, // loss
         _ => panic!("invalid move value(s) op={} - my={}\n", op, me),
     }
 }
@@ -29,7 +29,7 @@ fn rounds() -> Vec<(i32, i32)> {
             let mut chars = line.chars();
             (
                 move_value(chars.nth(0).unwrap()),
-                move_value(chars.nth(1).unwrap())
+                move_value(chars.nth(1).unwrap()),
             )
         })
         .collect()
@@ -38,29 +38,30 @@ fn rounds() -> Vec<(i32, i32)> {
 fn shape(op: i32, scenario: i32) -> i32 {
     let opts: Vec<i32> = vec![1, 2, 3];
     match scenario {
-        2 => op,  // draw
-        1 => *opts.iter().filter(|&x| round_value(op, *x) == 0).last().unwrap(), // lose
-        3 => *opts.iter().filter(|&x| round_value(op, *x) == 6).last().unwrap(), // win
+        2 => op, // draw
+        1 => *opts
+            .iter()
+            .filter(|&x| round_value(op, *x) == 0)
+            .last()
+            .unwrap(), // lose
+        3 => *opts
+            .iter()
+            .filter(|&x| round_value(op, *x) == 6)
+            .last()
+            .unwrap(), // win
         _ => panic!("invalid move me={}\n", scenario),
     }
 }
 
 fn part1() {
-    let score: i32 = rounds()
-        .iter()
-        .map(|(op, me)| {
-            round_score(*op, *me)
-        })
-        .sum();
+    let score: i32 = rounds().iter().map(|(op, me)| round_score(*op, *me)).sum();
     print!("{}\n", score);
 }
 
 fn part2() {
     let score: i32 = rounds()
         .iter()
-        .map(|(op, me)| {
-            round_score(*op, shape(*op, *me))
-        })
+        .map(|(op, me)| round_score(*op, shape(*op, *me)))
         .sum();
     print!("{}\n", score);
 }
