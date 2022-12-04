@@ -2,7 +2,7 @@ all:
 .PHONY: all
 
 day0%/input.txt day%/input.txt: session.txt
-	@mkdir --parents $(@D)
+	@mkdir -p $(@D)
 	@curl -s -b $(shell command -p cat session.txt) -o "$@" \
 		"https://adventofcode.com/2022/day/$*/input"
 

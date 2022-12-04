@@ -1,2 +1,13 @@
-*.txt
+# directories
+.pyvenv
+
+# extensions
+*.pyc
+
+# text files
+day0*/*.txt
+session.txt
+
+# binary files
 solve
+template
