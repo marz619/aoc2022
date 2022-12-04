@@ -1,21 +1,4 @@
 use std::io::Read;
-use std::str::FromStr;
-
-// Coding
-//
-// A -> Rock     <- X
-// B -> Paper    <- Y
-// C -> Scissors <- Z
-
-// Scoring
-//
-// Rock     -> 1
-// Paper    -> 2
-// Scissors -> 3
-//
-// Win  -> 6
-// Draw -> 3
-// Loss -> 0
 
 fn move_value(c: char) -> i32 {
     match c {
@@ -26,38 +9,60 @@ fn move_value(c: char) -> i32 {
     }
 }
 
-fn round_value(op_value: i32, my_value: i32) -> i32 {
-    match op_value - my_value {
+fn round_value(op: i32, me: i32) -> i32 {
+    match op - me {
         -1 | 2 => 6,  // win
         0 => 3,       // draw
         1 | -2 => 0,  // loss
-        _ => panic!("invalid move value(s) op={} - my={}\n", op_value, my_value),
+        _ => panic!("invalid move value(s) op={} - my={}\n", op, me),
     }
 }
 
-fn round_score(op_move: char, my_move: char) -> i32 {
-    let op_value = move_value(op_move);
-    let my_value = move_value(my_move);
-    round_value(op_value, my_value) + my_value
+fn round_score(op: i32, me: i32) -> i32 {
+    round_value(op, me) + me
+}
+
+fn rounds() -> Vec<(i32, i32)> {
+    read_input()
+        .lines()
+        .map(|line| {
+            let mut chars = line.chars();
+            (
+                move_value(chars.nth(0).unwrap()),
+                move_value(chars.nth(1).unwrap())
+            )
+        })
+        .collect()
+}
+
+fn shape(op: i32, scenario: i32) -> i32 {
+    let opts: Vec<i32> = vec![1, 2, 3];
+    match scenario {
+        2 => op,  // draw
+        1 => *opts.iter().filter(|&x| round_value(op, *x) == 0).last().unwrap(), // lose
+        3 => *opts.iter().filter(|&x| round_value(op, *x) == 6).last().unwrap(), // win
+        _ => panic!("invalid move me={}\n", scenario),
+    }
 }
 
 fn part1() {
-    let input = read_input();
-    let score: i32 = input.lines()
-        .map(|line| {
-            let mut split = line.split(' ');
-            let op = char::from_str(split.next().unwrap()).unwrap();
-            let me = char::from_str(split.next().unwrap()).unwrap();
-            round_score(op, me)
+    let score: i32 = rounds()
+        .iter()
+        .map(|(op, me)| {
+            round_score(*op, *me)
         })
         .sum();
     print!("{}\n", score);
 }
 
 fn part2() {
-    let input = read_input();
-    print!("{:?}\n", input);
-    panic!("part2 not implemented!")
+    let score: i32 = rounds()
+        .iter()
+        .map(|(op, me)| {
+            round_score(*op, shape(*op, *me))
+        })
+        .sum();
+    print!("{}\n", score);
 }
 
 fn read_input() -> String {
