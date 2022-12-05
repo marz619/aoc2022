@@ -3,8 +3,7 @@ all:
 
 day0%/input.txt day%/input.txt: session.txt
 	@mkdir -p $(@D)
-	@curl -s -b $(shell command -p cat session.txt) -o "$@" \
-		"https://adventofcode.com/2022/day/$*/input"
+	@curl -s -b "session.txt" -o "$@" "https://adventofcode.com/2022/day/$*/input"
 
 day%/output1.txt: day%/input.txt day%/solve.rs
 	@cd $(@D); rustc solve.rs && ./solve 1 < input.txt > output1.txt
